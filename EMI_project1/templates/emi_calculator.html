@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMI Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function updateForm() {
+            var calculate = document.getElementById("calculate").value;
+            
+            // Hide all fields first
+            document.getElementById("principalGroup").style.display = "none";
+            document.getElementById("rateGroup").style.display = "none";
+            document.getElementById("tenureGroup").style.display = "none";
+            document.getElementById("emiGroup").style.display = "none";
+
+            // Show only the relevant input fields based on the selection
+            if (calculate == "emi") {
+                document.getElementById("principalGroup").style.display = "block";
+                document.getElementById("rateGroup").style.display = "block";
+                document.getElementById("tenureGroup").style.display = "block";
+            } else if (calculate == "principal") {
+                document.getElementById("emiGroup").style.display = "block";
+                document.getElementById("rateGroup").style.display = "block";
+                document.getElementById("tenureGroup").style.display = "block";
+            } else if (calculate == "rate") {
+                document.getElementById("emiGroup").style.display = "block";
+                document.getElementById("principalGroup").style.display = "block";
+                document.getElementById("tenureGroup").style.display = "block";
+            } else if (calculate == "tenure") {
+                document.getElementById("emiGroup").style.display = "block";
+                document.getElementById("rateGroup").style.display = "block";
+                document.getElementById("principalGroup").style.display = "block";
+            }
+        }
+
+        // Run the function once to set the default display on page load
+        window.onload = function() {
+            updateForm();
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+    <h2 class="calculator-title">EMI Calculator</h2>
+    <form method="POST" id="emiForm">
+        <label for="calculate">Calculate:</label>
+        <select id="calculate" name="calculate" onchange="updateForm()">
+            <option value="emi">EMI</option>
+            <option value="principal">Principal</option>
+            <option value="rate">Rate of Interest</option>
+            <option value="tenure">Tenure</option>
+        </select>
+
+        <!-- Principal Input Field -->
+        <div id="principalGroup">
+            <label for="principal">Principal Amount:</label>
+            <input type="text" id="principal" name="principal" placeholder="Enter principal amount">
+        </div>
+
+        <!-- Rate of Interest Input Field -->
+        <div id="rateGroup">
+            <label for="rate">Rate of Interest (Annual %):</label>
+            <input type="text" id="rate" name="rate" placeholder="Enter interest rate">
+        </div>
+
+        <!-- Tenure Input Field -->
+        <div id="tenureGroup">
+            <label for="tenure">Tenure (Months):</label>
+            <input type="text" id="tenure" name="tenure" placeholder="Enter tenure in months">
+        </div>
+
+        <!-- EMI Input Field -->
+        <div id="emiGroup">
+            <label for="emi">EMI Amount:</label>
+            <input type="text" id="emi" name="emi" placeholder="Enter EMI amount">
+        </div>
+
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if result is not none %}
+        <h2 class="result">Calculated {{ request.form.get('calculate', 'EMI').capitalize() }}: <span>{{ result }}</span></h2>
+    {% endif %}
+
+    <!-- History Section -->
+    <h2>Your EMI Calculation History</h2>
+    <table>
+        <tr>
+            <th>Principal</th>
+            <th>Rate</th>
+            <th>Tenure</th>
+            <th>EMI</th>
+            <th>Result</th>
+            <th>Action</th>
+        </tr>
+        {% for row in history %}
+            <tr>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>
+                    <a href="{{ url_for('delete_history', id=row[0]) }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <button onclick="window.location.href='/'">Back to Home</button>
+    <button onclick="window.location.href='/logout'">Logout</button>
+</body>
+</html>

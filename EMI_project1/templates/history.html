@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EMI History</title>
+</head>
+<body>
+    <h2>EMI Calculation History</h2>
+    {% if history %}
+        <table border="1">
+            <tr>
+                <th>Loan Amount</th>
+                <th>Interest Rate</th>
+                <th>Tenure (Years)</th>
+                <th>EMI</th>
+                <th>Date</th>
+            </tr>
+            {% for item in history %}
+            <tr>
+                <td>₹{{ item.loan_amount }}</td>
+                <td>{{ item.interest_rate }}%</td>
+                <td>{{ item.tenure }}</td>
+                <td>₹{{ item.emi }}</td>
+                <td>{{ item.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No history found.</p>
+    {% endif %}
+    <br>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

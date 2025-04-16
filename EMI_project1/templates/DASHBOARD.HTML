@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ current_user.username }}!</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <h2>Calculate EMI</h2>
+    <form method="POST">
+        <input type="number" step="0.01" name="principal" placeholder="Principal Amount" required>
+        <input type="number" step="0.01" name="rate" placeholder="Annual Interest Rate (%)" required>
+        <input type="number" name="time" placeholder="Time (in years)" required>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if emi %}
+        <h3>Your EMI: ₹{{ emi }}</h3>
+    {% endif %}
+
+    <h2><a href="{{ url_for('history') }}">View EMI History</a></h2>
+</body>
+</html>

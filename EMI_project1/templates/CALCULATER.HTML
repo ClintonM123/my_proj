@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Calculate EMI</title>
+</head>
+<body>
+    <h2>EMI Calculator</h2>
+    <form method="POST">
+        <input type="text" name="loan_amount" placeholder="Loan Amount"><br>
+        <input type="text" name="interest_rate" placeholder="Interest Rate"><br>
+        <input type="text" name="tenure" placeholder="Tenure (months)"><br>
+        <input type="text" name="emi" placeholder="EMI (leave blank if unknown)"><br>
+        <button type="submit">Calculate</button>
+    </form>
+    {% if result %}
+        <h3>Result: {{ result }}</h3>
+    {% endif %}
+</body>
+</html>
